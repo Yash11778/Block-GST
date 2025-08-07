@@ -1,10 +1,5 @@
-import { Layout } from '@/components/layout/Layout';
-import Dashboard from '@/pages/Dashboard';
+import Landing from '@/pages/Landing';
 
 export default function HomePage() {
-  return (
-    <Layout>
-      <Dashboard />
-    </Layout>
-  );
+  return <Landing />;
 }

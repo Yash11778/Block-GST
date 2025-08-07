@@ -1,15 +1,16 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { 
   Home, 
-  Upload, 
-  QrCode, 
-  CreditCard, 
-  History, 
-  Settings,
+  Hash, 
+  Plus,
+  Camera,
+  Shield,
   FileText,
-  Wallet
+  BarChart3,
+  Search,
+  ShoppingBag
 } from 'lucide-react';
 import {
   Sidebar,
@@ -23,22 +24,57 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar';
 
-const menuItems = [
-  { title: 'Dashboard', url: '/', icon: Home },
-  { title: 'Upload Invoice', url: '/upload', icon: Upload },
-  { title: 'QR Verification', url: '/verify', icon: QrCode },
-  { title: 'Invoices', url: '/invoices', icon: FileText },
-  { title: 'Payments', url: '/payments', icon: CreditCard },
-  { title: 'XLM Wallet', url: '/wallet', icon: Wallet },
-  { title: 'History', url: '/history', icon: History },
-  { title: 'Settings', url: '/settings', icon: Settings },
-];
+const getRoleMenuItems = (role: string) => {
+  switch (role) {
+    case 'seller':
+      return [
+        { title: 'Dashboard', url: '/dashboard', icon: Home },
+        { title: 'Create Invoice', url: '/create', icon: Plus },
+        { title: 'My Invoices', url: '/invoices', icon: FileText },
+        { title: 'QR Scanner', url: '/scan', icon: Camera },
+      ];
+    
+    case 'buyer':
+      return [
+        { title: 'Dashboard', url: '/dashboard', icon: Home },
+        { title: 'QR Scanner', url: '/scan', icon: Camera },
+        { title: 'Hash Lookup', url: '/upload', icon: Hash },
+        { title: 'My Purchases', url: '/purchases', icon: ShoppingBag },
+      ];
+    
+    case 'officer':
+      return [
+        { title: 'Dashboard', url: '/dashboard', icon: Home },
+        { title: 'QR Scanner', url: '/scan', icon: Camera },
+        { title: 'Hash Lookup', url: '/upload', icon: Hash },
+        { title: 'Audit Reports', url: '/audit', icon: BarChart3 },
+        { title: 'Compliance Search', url: '/compliance', icon: Search },
+      ];
+    
+    default:
+      return [
+        { title: 'Dashboard', url: '/dashboard', icon: Home },
+        { title: 'QR Scanner', url: '/scan', icon: Camera },
+        { title: 'Hash Lookup', url: '/upload', icon: Hash },
+      ];
+  }
+};
 
 export function AppSidebar() {
   const { state } = useSidebar();
   const router = useRouter();
   const currentPath = router.pathname;
   const isCollapsed = state === 'collapsed';
+  
+  // Get user role from localStorage (in real app, from context/auth)
+  const [userRole, setUserRole] = useState<string>('seller');
+  
+  useEffect(() => {
+    const savedRole = localStorage.getItem('userRole') || 'seller';
+    setUserRole(savedRole);
+  }, []);
+  
+  const menuItems = getRoleMenuItems(userRole);
 
   const isActive = (path: string) => currentPath === path;
   const getNavClasses = (active: boolean) =>
@@ -52,10 +88,13 @@ export function AppSidebar() {
         <div className="p-4">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
-              <FileText className="w-4 h-4 text-primary-foreground" />
+              <Shield className="w-4 h-4 text-primary-foreground" />
             </div>
             {!isCollapsed && (
-              <span className="text-lg font-bold text-foreground">InvoicePay</span>
+              <div>
+                <span className="text-lg font-bold text-foreground">Block-GST</span>
+                <p className="text-xs text-muted-foreground capitalize">{userRole} Account</p>
+              </div>
             )}
           </div>
         </div>

@@ -1,10 +1,10 @@
 import { Layout } from '@/components/layout/Layout';
-import UploadInvoice from '@/pages/UploadInvoice';
+import HashLookup from '@/pages/HashLookup';
 
 export default function UploadPage() {
   return (
     <Layout>
-      <UploadInvoice />
+      <HashLookup />
     </Layout>
   );
 }
