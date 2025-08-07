@@ -1,0 +1,14 @@
+{
+  "/_app": "pages/_app.js",
+  "/_error": "pages/_error.js",
+  "/_document": "pages/_document.js",
+  "/": "pages/index.js",
+  "/upload": "pages/upload.js",
+  "/404": "pages/404.js",
+  "/invoices": "pages/invoices.js",
+  "/verify": "pages/verify.js",
+  "/payments": "pages/payments.js",
+  "/wallet": "pages/wallet.js",
+  "/history": "pages/history.js",
+  "/settings": "pages/settings.js"
+}
